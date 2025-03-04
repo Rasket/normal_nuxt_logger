@@ -5,7 +5,6 @@ export default {
     return now.toISOString().replace('T', ' ').substr(0, 19);
   },
   
-  // Форматирование сообщения
   message: (msg) => {
     return msg;
   },

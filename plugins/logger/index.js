@@ -42,10 +42,8 @@ class Logger {
     let functionName;
     
     if (match) {
-      // Формат "at FunctionName (file:line:column)"
       functionName = match[1];
     } else {
-      // Формат "at file:line:column"
       functionName = '(anonymous)';
     }
     
@@ -78,18 +76,15 @@ class Logger {
       fileName: this.fileName,
       timestamp,
       color: config.colors[level],
-      lineNumber: stackInfo.lineNumber,
       functionName: stackInfo.functionName,
-      fullStack: stackInfo.fullStack,
-      args: args // Теперь передаем аргументы
+      args: args // аргументы логирования
     };
     
-    // Определяем, какие транспорты использовать
     const activeTransports = process.env.NODE_ENV === 'production' 
       ? config.productionTransports
       : config.transports;
       
-    // Отправляем лог во все активные транспорты
+    // Отправляем лог во все активные транспортеры
     activeTransports.forEach(transportName => {
       if (transports[transportName]) {
         transports[transportName](level, message, options);
@@ -165,15 +160,6 @@ const loggerUtils = {
   }
 };
 
-// Функция для получения информации о компоненте
-function getComponentInfo() {
-  // Мы получим имя компонента из контекста позже
-  return {
-    fileName: 'Unknown.vue', 
-    sourceFile: 'Unknown.vue',
-    componentName: 'Unknown'
-  };
-}
 
 // Глобальный логгер для сервисов
 const globalLogger = new Logger({

@@ -36,10 +36,5 @@ export function useLogger(customName) {
   // Создаем логгер для компонента
   const logger = useComponentLogger(componentName.value);
   
-  // Выводим дебаг-сообщение при монтировании (можно убрать)
-  onBeforeMount(() => {
-    logger.debug(`Component initialized: ${componentName.value}`);
-  });
-  
   return logger;
 }

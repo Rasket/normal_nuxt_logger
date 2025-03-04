@@ -1,20 +1,15 @@
-// Транспорты для вывода логов
-
-
 export default {
-    // Логирование в консоль браузера с сохранением источника файла для отображения
     console: (level, message, options) => {
 
       const { 
         componentName, 
-        color, 
-        sourceFile, 
+        color,
         fileName, 
         timestamp, 
         args,
-        functionName, 
-        lineNumber
+        functionName
       } = options;
+
       if (typeof window === 'undefined') return;
       if (typeof console[level] !== 'function') {
         // Fallback на console.log, если метода нет
@@ -23,18 +18,12 @@ export default {
       }
       
 
-
-
-      // Создаем специальный цветной префикс
       const prefix = `%c${timestamp} [${level.toUpperCase()}] ${componentName}`;
       const style = `color: ${color}; font-weight: bold;`;
     
-      // Основная группа для каждого лога - так мы можем расширять/сворачивать логи
       console.group(prefix, style);
+      console.log(`Source: %c${fileName} : ${functionName}`, 'font-weight: bold; font-size: 14px;');
       
-      console.log(`Функция ${functionName}`)
-
-      // Показываем сообщение
       if (typeof message === 'object') {
         console.dir(message);
       } else {
@@ -44,8 +33,6 @@ export default {
         args.forEach(arg => console.log(arg));
       }
       
-      // Показываем источник (это будет правильно отображаться как ссылка в консоли)
-      console.log(`Source: %c${fileName}`, 'font-weight: bold;');
       console.groupEnd();
     },
     
@@ -56,12 +43,10 @@ export default {
         if (import.meta.server && process.stdout && process.stdout.write) {
           const { componentName, timestamp, fileName, args } = options;
               
-          // Форматируем сообщение
           let formattedMessage = typeof message === 'object' 
             ? JSON.stringify(message, null, 2) 
             : message;
             
-          // Добавляем аргументы
           if (args && args.length > 0) {
             formattedMessage += ' ' + args.map(arg => 
               typeof arg === 'object' ? JSON.stringify(arg) : arg
@@ -75,6 +60,7 @@ export default {
     },
     
     // Логирование в localStorage (имитация файла)
+    // не тестировал
     file: (level, message, options) => {
       const { componentName, timestamp, fileName } = options;
       

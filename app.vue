@@ -1,38 +1,27 @@
 <template>
   <div>
-    <h1>Мой компонент</h1>
-    <button @click="handleClick">Нажми меня</button>
-    <buttonme>
+    <ButtonLog>
 
-    </buttonme>
+    </ButtonLog>
   </div>
 </template>
 
-<script setup>
-import buttonme from '@/components/buttonme'
-
-</script>
-
 <script>
+// log with old style component
+import ButtonLog from '@/components/ButtonLog'
+
 export default {
-  name: 'MyComponent', // Имя компонента для логгера
   
+  created() {
+    this.$log.configure({ level: 'error' });
+    // log from created
+    this.$log.info('Компонент создан');
+  },
+
   mounted() {
-    this.$log.configure({ level: 'debug' });
-    // Логгер уже доступен через this.$logger или this.$log
-    this.$log.info('Компонент смонтирован');
-    this.$logger.debug('Отладочная информация',  { a: 1, b: 2 });
+    // log from mounted
+    this.$log.debug('Компонент смонтирован');
   },
   
-  methods: {
-    handleClick() {
-      this.$log.info('Кнопка была нажата');
-      
-      // Можно настроить уровень логирования для этого компонента
-      // this.$log.configure({ level: 'trace' });
-      
-      this.$log.trace('Это теперь будет отображаться');
-    }
-  }
 }
 </script>
